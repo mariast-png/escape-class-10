@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operation: Midnight Express — Grade 10 Grammar Escape Game</title>
+  <style>
+    /* =========================================================================
+       1. LOCAL SYSTEM TYPOGRAPHY & FESTIVE DESIGN TOKENS (ZERO EXTERNAL URLS)
+       ========================================================================= */
+    :root {
+      --font-sans: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: Georgia, "Times New Roman", Cambria, serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+      --pine-dark: #091d16;
+      --pine-mid: #103226;
+      --pine-card: #143b2d;
+      --berry-dark: #7c1926;
+      --berry-mid: #a82432;
+      --berry-bright: #c83747;
+      --gold-bright: #f6d57b;
+      --gold-warm: #e0b24c;
+      --gold-brass: #b8892a;
+      --emerald-bright: #10b981;
+      --emerald-deep: #064e3b;
+      --parchment-light: #fffdf8;
+      --parchment-warm: #f5ecda;
+      --ink-primary: #1b2420;
+      --ink-secondary: #475550;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      color: #f8fafc;
+      line-height: 1.5;
+      background:
+        radial-gradient(circle at 15% 8%, rgba(200, 55, 71, 0.24) 0%, transparent 38%),
+        radial-gradient(circle at 85% 15%, rgba(224, 178, 76, 0.16) 0%, transparent 42%),
+        linear-gradient(165deg, #0d2a20 0%, #081812 58%, #050f0c 100%);
+      overflow-x: hidden;
+    }
+
+    .font-serif { font-family: var(--font-serif); }
+    .font-mono { font-family: var(--font-mono); }
+    .hidden { display: none !important; }
+
+    /* Festive decorative garland strip along top edge */
+    .garland-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      z-index: 30;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        90deg,
+        #c83747 0px,
+        #c83747 22px,
+        #f6d57b 22px,
+        #f6d57b 32px,
+        #15803d 32px,
+        #15803d 54px,
+        #f6d57b 54px,
+        #f6d57b 64px
+      );
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Gentle toggleable snowfall layer */
+    .snow-layer {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        radial-gradient(2.5px 2.5px at 45px 55px, rgba(255, 253, 245, 0.42) 50%, transparent 100%),
+        radial-gradient(2px 2px at 150px 180px, rgba(246, 213, 123, 0.32) 50%, transparent 100%),
+        radial-gradient(3px 3px at 270px 95px, rgba(255, 255, 255, 0.34) 50%, transparent 100%),
+        radial-gradient(2px 2px at 360px 250px, rgba(255, 255, 255, 0.28) 50%, transparent 100%);
+      background-size: 410px 320px;
+      animation: snowDrift 24s linear infinite;
+    }
+
+    @keyframes snowDrift {
+      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 70px 320px, -55px 320px, 45px 320px, -35px 320px; }
+    }
+
+    @keyframes shakeLock {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+    .animate-shake { animation: shakeLock 0.42s ease-in-out; }
+
+    @keyframes trainGlide {
+      0%, 100% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+    }
+    .animate-train { animation: trainGlide 4.5s ease-in-out infinite; }
+
+    /* =========================================================================
+       2. LAYOUT & CONTAINERS
+       ========================================================================= */
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px 16px 36px;
+    }
+
+    .festive-brass-panel {
+      background: linear-gradient(150deg, rgba(22, 62, 47, 0.96) 0%, rgba(10, 30, 22, 0.98) 100%);
+      border: 2px solid var(--gold-brass);
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(246, 213, 123, 0.28);
+    }
+
+    .holiday-parchment {
+      background: linear-gradient(180deg, var(--parchment-light) 0%, var(--parchment-warm) 100%);
+      color: var(--ink-primary);
+      border: 2px solid var(--gold-warm);
+      border-radius: 18px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.48), inset 0 0 22px rgba(184, 137, 42, 0.14);
+    }
+
+    /* =========================================================================
+       3. BUTTONS & BADGES
+       ========================================================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 15px;
+      border-radius: 11px;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      border-radius: 9px;
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #f9df8e 0%, #e0b24c 100%);
+      color: #16231d;
+      border-color: #fef0b5;
+      box-shadow: 0 3px 10px rgba(224, 178, 76, 0.35);
+    }
+
+    .btn-berry {
+      background: linear-gradient(180deg, #c83747 0%, #9e1f2d 100%);
+      color: #fff8eb;
+      border-color: #fca5a5;
+      box-shadow: 0 4px 12px rgba(168, 36, 50, 0.42);
+    }
+
+    .btn-pine {
+      background: linear-gradient(180deg, #15803d 0%, #166534 100%);
+      color: #ffffff;
+      border-color: #86efac;
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.35);
+    }
+
+    .btn-dark {
+      background: rgba(8, 22, 16, 0.85);
+      color: #e2ede8;
+      border-color: #3f6253;
+    }
+    .btn-dark:hover:not(:disabled) {
+      background: rgba(18, 48, 36, 0.95);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 2px 9px;
+      border-radius: 999px;
+    }
+
+    .badge-berry {
+      background: var(--berry-mid);
+      color: #fef0b5;
+      border: 1px solid rgba(246, 213, 123, 0.45);
+    }
+
+    .badge-pine {
+      background: #14532d;
+      color: #bbf7d0;
+      border: 1px solid rgba(134, 239, 172, 0.45);
+    }
+
+    /* =========================================================================
+       4. TOP HUD HEADER
+       ========================================================================= */
+    .hud-header {
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hud-crest {
+      width: 54px;
+      height: 54px;
+      border-radius: 13px;
+      background: linear-gradient(145deg, #8f1d2c 0%, #5c101b 100%);
+      border: 1.5px solid var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .hud-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .hud-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.38rem;
+      color: var(--gold-bright);
+    }
+
+    .hud-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .timer-cluster {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(6, 17, 13, 0.85);
+      border: 1px solid #456b5b;
+      border-radius: 11px;
+      padding: 5px 10px;
+    }
+
+    .timer-value {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.94rem;
+      color: var(--gold-bright);
+    }
+
+    /* =========================================================================
+       5. INTRO SCREEN
+       ========================================================================= */
+    .intro-card {
+      padding: 26px;
+      max-width: 840px;
+      margin: 10px auto;
+    }
+
+    .holiday-train-stage {
+      background: linear-gradient(180deg, #0b241b 0%, #13392c 68%, #1e4d3b 100%);
+      border: 1.5px solid var(--gold-warm);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 18px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .intro-rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 12px;
+      margin: 18px 0 22px;
+    }
+
+    .rule-tile {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid #d9c28b;
+      border-top: 3px solid var(--berry-mid);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .rule-tile h3 {
+      margin: 0 0 4px;
+      font-size: 0.92rem;
+      color: var(--berry-dark);
+    }
+
+    .rule-tile p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: var(--ink-secondary);
+    }
+
+    .team-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      background: #fff8e7;
+      border: 2px dashed var(--gold-brass);
+      border-radius: 14px;
+      padding: 15px;
+    }
+
+    .team-input {
+      flex: 1 1 240px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 2px solid #c5b38a;
+      font-family: var(--font-sans);
+      font-size: 0.98rem;
+      color: var(--ink-primary);
+      background: #ffffff;
+    }
+    .team-input:focus {
+      outline: none;
+      border-color: var(--berry-mid);
+    }
+
+    /* =========================================================================
+       6. STATION NAVIGATION TABS
+       ========================================================================= */
+    .station-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(126px, 1fr));
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .station-tab {
+      background: rgba(12, 34, 25, 0.9);
+      border: 2px solid #355949;
+      color: #d8e6df;
+      border-radius: 12px;
+      padding: 9px 10px;
+      text-align: left;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: all 0.14s ease;
+    }
+
+    .station-tab:hover {
+      border-color: var(--gold-warm);
+      color: #ffffff;
+    }
+
+    .station-tab.active {
+      background: #174232;
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      box-shadow: 0 0 0 2px rgba(246, 213, 123, 0.24);
+    }
+
+    .station-tab.unlocked {
+      border-color: var(--emerald-bright);
+      background: rgba(6, 78, 59, 0.65);
+    }
+
+    .tab-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .tab-sub {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      margin-top: 3px;
+      color: #9ab5a8;
+    }
+    .station-tab.unlocked .tab-sub {
+      color: #6ee7b7;
+      font-weight: 700;
+    }
+
+    /* =========================================================================
+       7. STATION WORKSPACE, TASKS, FEEDBACK & DEDUCTION LOCK
+       ========================================================================= */
+    .station-panel {
+      padding: 22px;
+    }
+
+    .station-top {
+      border-bottom: 2px solid #e1cfa4;
+      padding-bottom: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .station-heading {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 1.48rem;
+      color: var(--berry-dark);
+    }
+
+    .topic-pill {
+      background: #fef3c7;
+      color: #854d0e;
+      border: 1px solid var(--gold-warm);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .narrative-callout {
+      background: rgba(255, 255, 255, 0.82);
+      border-left: 4px solid var(--berry-mid);
+      padding: 11px 14px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-size: 0.94rem;
+      color: var(--ink-primary);
+    }
+
+    .tasks-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .task-card {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 15px;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .task-card.state-ok {
+      border-color: #10b981;
+      background: #f0fdf4;
+    }
+
+    .task-card.state-wrong {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+
+    .task-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 11px;
+    }
+
+    .task-question {
+      margin: 0;
+      font-weight: 700;
+      font-size: 0.97rem;
+      color: #0f172a;
+      flex: 1 1 280px;
+    }
+
+    .status-chip {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .status-chip.ok {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #22c55e;
+    }
+
+    .status-chip.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
+
+    .mc-choices {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 8px;
+    }
+
+    .choice-btn {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      color: #1e293b;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+
+    .choice-btn:hover:not(:disabled) {
+      border-color: var(--gold-warm);
+      background: #fffbeb;
+    }
+
+    .choice-btn.picked {
+      border-color: #15803d;
+      background: #f0fdf4;
+      color: #14532d;
+      box-shadow: 0 0 0 2px rgba(21, 128, 61, 0.16);
+    }
+
+    .choice-btn.picked-ok {
+      border-color: #059669;
+      background: #d1fae5;
+      color: #064e3b;
+    }
+
+    .choice-btn.picked-wrong {
+      border-color: #dc2626;
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    .choice-tag {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .choice-btn.picked .choice-tag {
+      background: #15803d;
+      color: #ffffff;
+    }
+
+    .typed-input {
+      width: 100%;
+      padding: 10px 13px;
+      border-radius: 10px;
+      border: 2px solid #94a3b8;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: #0f172a;
+      background: #f8fafc;
+    }
+    .typed-input:focus {
+      outline: none;
+      border-color: #15803d;
+      background: #ffffff;
+    }
+
+    .hint-bar {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hint-trigger {
+      background: #fef3c7;
+      color: #78350f;
+      border: 1px solid #d97706;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .hint-trigger:hover {
+      background: #fde68a;
+    }
+
+    .hint-callout {
+      margin-top: 8px;
+      background: #fffbeb;
+      border: 1px dashed #d97706;
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 0.85rem;
+      color: #78350f;
+    }
+
+    /* Verification & Cooldown Bar */
+    .verify-strip {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 14px;
+      background: #0b2119;
+      color: #f8fafc;
+      border: 2px solid var(--gold-brass);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .verify-msg {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .cooldown-box {
+      background: #7f1d1d;
+      border: 1px solid #fca5a5;
+      color: #fef2f2;
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      min-width: 260px;
+    }
+
+    .cooldown-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .cooldown-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #fde047);
+      transition: width 0.35s linear;
+    }
+
+    /* Brass Lock & Deduction Riddle Panel */
+    .lock-panel {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #153629 0%, #091b14 100%);
+      border: 2px solid var(--gold-bright);
+      color: #fff8e7;
+    }
+
+    .lock-panel.muted {
+      opacity: 0.68;
+      border-color: #4d7061;
+      background: #132b21;
+      color: #cbd5e1;
+    }
+
+    .dial-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .dial-box {
+      width: 66px;
+      height: 66px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 1.95rem;
+      font-weight: 800;
+      border-radius: 12px;
+      border: 3px solid var(--gold-bright);
+      background: #06120d;
+      color: var(--gold-bright);
+    }
+    .dial-box:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(246, 213, 123, 0.35);
+    }
+
+    /* =========================================================================
+       8. MASTER VAULT & CERTIFICATE
+       ========================================================================= */
+    .vault-panel {
+      padding: 26px;
+      text-align: center;
+    }
+
+    .key-ring {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .key-card {
+      width: 68px;
+      padding: 10px 6px;
+      border-radius: 12px;
+      border: 2px solid #456b5b;
+      background: #091b14;
+      color: #9ab5a8;
+      text-align: center;
+    }
+    .key-card.open {
+      border-color: #10b981;
+      background: #064e3b;
+      color: #ecfdf5;
+    }
+
+    .key-symbol {
+      font-family: var(--font-mono);
+      font-size: 1.65rem;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .vault-code-input {
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      font-size: 1.65rem;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 12px;
+      border: 3px solid var(--gold-bright);
+      background: #06120d;
+      color: var(--gold-bright);
+    }
+
+    .certificate-card {
+      padding: 30px;
+      text-align: center;
+      border: 4px double var(--gold-brass);
+    }
+
+    .stats-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .stat-box {
+      background: #ffffff;
+      border: 1.5px solid #d9c28b;
+      border-radius: 12px;
+      padding: 12px 18px;
+      min-width: 165px;
+    }
+
+    /* =========================================================================
+       9. MODALS (FIELD GUIDE & PRINTABLE WORKSHEET)
+       ========================================================================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(3, 10, 7, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 860px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .modal-top {
+      padding: 14px 20px;
+      background: #091d16;
+      color: var(--gold-bright);
+      border-bottom: 2px solid var(--gold-brass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-content {
+      padding: 20px;
+      overflow-y: auto;
+      background: var(--parchment-light);
+      color: var(--ink-primary);
+    }
+
+    .guide-block {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid var(--berry-mid);
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+    }
+
+    .guide-block h4 {
+      margin: 0 0 6px;
+      color: var(--berry-dark);
+      font-size: 0.98rem;
+    }
+
+    .guide-block ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.88rem;
+    }
+
+    @media print {
+      body { background: #ffffff !important; color: #000000 !important; }
+      .garland-bar, .snow-layer, .no-print { display: none !important; }
+      .holiday-parchment, .festive-brass-panel {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #333333 !important;
+        box-shadow: none !important;
+      }
+      .modal-overlay {
+        position: static !important;
+        background: none !important;
+        padding: 0 !important;
+      }
+      .modal-box {
+        max-height: none !important;
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="garland-bar" aria-hidden="true"></div>
+  <div id="snow-layer" class="snow-layer" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <!-- =====================================================================
+         TOP HUD HEADER
+         ===================================================================== -->
+    <header class="festive-brass-panel hud-header">
+      <div class="hud-brand">
+        <div class="hud-crest" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 64 64" fill="none">
+            <polygon points="32,5 36,15 47,15 38,21 41,31 32,25 23,31 26,21 17,15 28,15" fill="#f6d57b"/>
+            <rect x="12" y="33" width="40" height="17" rx="4" fill="#14532d" stroke="#f6d57b" stroke-width="2"/>
+            <rect x="20" y="38" width="8" height="7" rx="1.5" fill="#fef08a"/>
+            <rect x="36" y="38" width="8" height="7" rx="1.5" fill="#fef08a"/>
+            <circle cx="20" cy="54" r="4.5" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+            <circle cx="44" cy="54" r="4.5" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="hud-badges">
+            <span class="badge badge-berry">🎄 Grade 10 &bull; Christmas Escape</span>
+            <span id="hud-team-badge" class="badge badge-pine hidden">Team: <span id="hud-team-name">Detectives</span></span>
+          </div>
+          <h1 class="hud-title">Operation: Midnight Express</h1>
+        </div>
+      </div>
+
+      <div class="hud-controls no-print">
+        <div id="timer-cluster" class="timer-cluster">
+          <span aria-hidden="true">🕯️</span>
+          <span id="timer-value" class="timer-value">45:00</span>
+          <button type="button" id="timer-pause-btn" class="btn btn-dark btn-sm" onclick="toggleTimerPause()">Pause</button>
+          <button type="button" class="btn btn-dark btn-sm" onclick="toggleTimerVisibility()">Hide</button>
+        </div>
+        <button type="button" id="timer-show-btn" class="btn btn-dark btn-sm hidden" onclick="toggleTimerVisibility()">Show Clock</button>
+
+        <button type="button" id="snow-toggle-btn" class="btn btn-dark btn-sm" onclick="toggleSnow()">❄️ Snow On</button>
+
+        <button type="button" id="sound-toggle-btn" class="btn btn-dark btn-sm" onclick="toggleSound()">
+          <span id="sound-icon">🔔</span>
+          <span id="sound-label">Chimes On</span>
+        </button>
+
+        <button type="button" class="btn btn-gold btn-sm" onclick="openFieldGuide()">
+          📖 Grammar Field Guide
+        </button>
+
+        <button type="button" class="btn btn-dark btn-sm" onclick="openPrintModal()">
+          🖨️ Print Handout
+        </button>
+      </div>
+    </header>
+
+    <!-- =====================================================================
+         SCREEN 1: FESTIVE MISSION BRIEFING
+         ===================================================================== -->
+    <section id="screen-intro" class="holiday-parchment intro-card">
+      <div class="holiday-train-stage" aria-hidden="true">
+        <svg class="animate-train" width="440" height="84" viewBox="0 0 440 84" fill="none">
+          <!-- Snow bed & festive track -->
+          <path d="M8 70 Q115 64 220 70 T432 70" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>
+          <line x1="16" y1="73" x2="424" y2="73" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="10 6"/>
+          <!-- Festive holly star -->
+          <polygon points="48,14 51,21 59,21 53,26 55,33 48,29 41,33 43,26 37,21 45,21" fill="#f6d57b"/>
+          <polygon points="392,16 394.5,22 401,22 396,26 398,32 392,28.5 386,32 388,26 383,22 389.5,22" fill="#f6d57b"/>
+          <!-- Holiday Locomotive -->
+          <rect x="78" y="34" width="72" height="30" rx="5" fill="#a82432" stroke="#f6d57b" stroke-width="2"/>
+          <rect x="124" y="20" width="28" height="44" rx="4" fill="#14532d" stroke="#f6d57b" stroke-width="2"/>
+          <rect x="90" y="22" width="13" height="12" fill="#d97706" stroke="#f6d57b" stroke-width="1.5"/>
+          <polygon points="78,64 64,70 80,70" fill="#f6d57b"/>
+          <circle cx="92" cy="67" r="6" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+          <circle cx="111" cy="67" r="6" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+          <circle cx="136" cy="67" r="6" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+          <!-- String lights along carriages -->
+          <line x1="152" y1="53" x2="166" y2="53" stroke="#f6d57b" stroke-width="3"/>
+          <rect x="166" y="27" width="96" height="37" rx="5" fill="#166534" stroke="#f6d57b" stroke-width="2"/>
+          <circle cx="182" cy="24" r="3" fill="#fef08a"/>
+          <circle cx="214" cy="24" r="3" fill="#f87171"/>
+          <circle cx="246" cy="24" r="3" fill="#fef08a"/>
+          <rect x="176" y="35" width="17" height="13" rx="2" fill="#fef08a"/>
+          <rect x="205" y="35" width="17" height="13" rx="2" fill="#fef08a"/>
+          <rect x="234" y="35" width="17" height="13" rx="2" fill="#fef08a"/>
+          <circle cx="184" cy="67" r="5.5" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+          <circle cx="242" cy="67" r="5.5" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+          <!-- Second Carriage -->
+          <line x1="262" y1="53" x2="276" y2="53" stroke="#f6d57b" stroke-width="3"/>
+          <rect x="276" y="27" width="96" height="37" rx="5" fill="#991b1b" stroke="#f6d57b" stroke-width="2"/>
+          <circle cx="292" cy="24" r="3" fill="#fef08a"/>
+          <circle cx="324" cy="24" r="3" fill="#fef08a"/>
+          <circle cx="356" cy="24" r="3" fill="#f87171"/>
+          <rect x="286" y="35" width="17" height="13" rx="2" fill="#fef08a"/>
+          <rect x="315" y="35" width="17" height="13" rx="2" fill="#fef08a"/>
+          <rect x="344" y="35" width="17" height="13" rx="2" fill="#fef08a"/>
+          <circle cx="294" cy="67" r="5.5" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+          <circle cx="352" cy="67" r="5.5" fill="#091d16" stroke="#f6d57b" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <span class="badge badge-berry">Christmas Eve Dispatch &bull; 23:15</span>
+      <h2 class="font-serif" style="margin: 8px 0 10px; font-size: 1.72rem; color: var(--berry-dark);">
+        The Christmas Midnight Express Needs Your Grammar Rescue!
+      </h2>
+      <p style="margin: 0 0 14px; font-size: 0.98rem;">
+        Heavy winter snow has frozen six grammar control terminals along the <strong>Midnight Express</strong>. Work together in your team to repair all 24 grammar entries across six stations, crack each brass lock's deduction riddle, and unlock the Master Vault before Christmas morning!
+      </p>
+
+      <div class="intro-rules-grid">
+        <div class="rule-tile">
+          <h3>1. Complete 4 Tasks per Station</h3>
+          <p>Each station features 2 Multiple-Choice tasks and 2 typing tasks. Open a <strong>Grammar Hint</strong> anytime if you want a rule reminder.</p>
+        </div>
+        <div class="rule-tile">
+          <h3>2. Targeted Feedback + Cooldown</h3>
+          <p><strong>Verify Terminal</strong> marks each task as right or wrong, opens hints on mistakes, and starts a brief <strong>Security Cooldown</strong> so you read and think carefully.</p>
+        </div>
+        <div class="rule-tile">
+          <h3>3. Six Brass Locks &rarr; Vault</h3>
+          <p>Once all 4 station tasks pass, solve the <strong>Deduction Riddle</strong> to turn the brass dial and collect one character of the 6-part Master Code.</p>
+        </div>
+      </div>
+
+      <div class="team-box">
+        <input type="text" id="team-name-input" class="team-input" maxlength="32" placeholder="Enter your team name (e.g. Winter Crew 10b)..." />
+        <button type="button" class="btn btn-berry" style="padding: 12px 22px; font-size: 0.98rem;" onclick="startGame()">
+          🎄 Start Escape Mission &rarr;
+        </button>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         SCREEN 2: GAMEPLAY WORKSPACE
+         ===================================================================== -->
+    <main id="screen-game" class="hidden">
+      <nav id="station-tabs" class="station-tabs" aria-label="Escape Stations"></nav>
+      <div id="station-workspace"></div>
+    </main>
+
+    <!-- =====================================================================
+         SCREEN 3: VICTORY CERTIFICATE
+         ===================================================================== -->
+    <section id="screen-victory" class="hidden holiday-parchment certificate-card">
+      <div style="font-size: 2.5rem; margin-bottom: 6px;">🎄✨🚂</div>
+      <span class="badge badge-pine">Master Vault Unlocked &bull; Express Restored</span>
+      <h2 class="font-serif" style="margin: 10px 0 6px; font-size: 1.95rem; color: var(--berry-dark);">
+        Christmas Grammar Escape Certificate
+      </h2>
+      <p style="margin: 0; color: var(--ink-secondary);">Awarded with holiday cheer to</p>
+      <div id="cert-team-name" class="font-serif" style="font-size: 1.85rem; font-weight: 800; color: #0f172a; margin: 8px 0;">
+        Winter Crew
+      </div>
+      <p style="max-width: 640px; margin: 0 auto; font-size: 0.95rem;">
+        for solving all six stations of <strong>Operation: Midnight Express</strong>—reviewing tenses and sequence, active/passive voice, conditionals and wishes, reported speech, infinite verb forms and relative clauses, and modals, adverbs, and comparisons.
+      </p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div style="font-size: 0.74rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Time Remaining</div>
+          <div id="cert-time" class="font-mono" style="font-size: 1.35rem; font-weight: 800; color: #0f172a;">45:00</div>
+        </div>
+        <div class="stat-box">
+          <div style="font-size: 0.74rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Missed Checks</div>
+          <div id="cert-misses" class="font-mono" style="font-size: 1.35rem; font-weight: 800; color: #0f172a;">0</div>
+        </div>
+        <div class="stat-box">
+          <div style="font-size: 0.74rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Holiday Honor</div>
+          <div id="cert-honor" style="font-size: 1.12rem; font-weight: 800; color: #b45309;">🌟 Golden Bell Crew</div>
+        </div>
+      </div>
+
+      <div class="no-print" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px;">
+        <button type="button" class="btn btn-pine" onclick="window.print()">🖨️ Print Certificate</button>
+        <button type="button" class="btn btn-dark" onclick="resetGame()">🔄 Play Again</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- =======================================================================
+       MODAL 1: GRAMMAR FIELD GUIDE
+       ======================================================================= -->
+  <div id="field-guide-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="guide-title">
+    <div class="modal-box festive-brass-panel">
+      <div class="modal-top">
+        <h3 id="guide-title" class="font-serif" style="margin: 0; font-size: 1.2rem;">📖 Grade 10 Grammar Field Guide</h3>
+        <button type="button" class="btn btn-dark btn-sm" onclick="closeFieldGuide()">Close ✕</button>
+      </div>
+      <div class="modal-content">
+        <div class="guide-block">
+          <h4>1. Tenses &amp; Vor-/Nachzeitigkeit (Station 1)</h4>
+          <ul>
+            <li><strong>Simple Past vs. Past Progressive:</strong> Ongoing action (<em>was/were + -ing</em>) interrupted by a sudden event (<em>Simple Past</em>).</li>
+            <li><strong>Past Perfect (Vorvergangenheit):</strong> <em>had + Past Participle (3rd form)</em> for an action completed <strong>before</strong> another past reference point.</li>
+            <li><strong>Present Perfect:</strong> <em>have/has + 3rd form</em> with time markers like <em>since, for, yet, already, just</em>.</li>
+            <li><strong>going to-Future:</strong> Plans or predictions based on visible present evidence.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h4>2. Active vs. Passive Voice (Station 2)</h4>
+          <ul>
+            <li><strong>Active:</strong> Emphasizes who performs the action (the agent).</li>
+            <li><strong>Passive:</strong> Emphasizes the action or affected object &rarr; <strong>be + Past Participle (3rd form)</strong> (<em>are delivered, was hidden, hasn't been repaired</em>).</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h4>3. Conditionals &amp; "I wish" (Station 3)</h4>
+          <ul>
+            <li><strong>Type I (real):</strong> <em>If + Simple Present</em>, <em>will + infinitive</em>.</li>
+            <li><strong>Type II (imagined present):</strong> <em>If + Simple Past</em>, <em>would + infinitive</em>.</li>
+            <li><strong>Type III (past impossibility):</strong> <em>If + Past Perfect</em>, <em>would have + 3rd form</em>.</li>
+            <li><strong>I wish (past regret):</strong> <em>I wish + Past Perfect</em> (<em>had + 3rd form</em>).</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h4>4. Reported Speech (Station 4)</h4>
+          <ul>
+            <li><strong>Backshift (after past reporting verbs):</strong> Simple Past &rarr; <em>Past Perfect</em>; <em>yesterday</em> &rarr; <em>the day before</em>.</li>
+            <li><strong>Yes/No-Questions:</strong> <em>asked if / whether + subject + verb</em> (no <em>do/does/did</em>).</li>
+            <li><strong>Commands:</strong> <em>told + object + (not) to + infinitive</em>.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h4>5. Infinite Verb Forms &amp; Relative Clauses (Station 5)</h4>
+          <ul>
+            <li><strong>Gerund (-ing):</strong> After prepositions (<em>look forward to reaching, without stopping</em>).</li>
+            <li><strong>to-Infinitive:</strong> After verbs like <em>manage, decide, promise</em>.</li>
+            <li><strong>Participle Clauses:</strong> Passive participle (3rd form) can shorten passive relative clauses (<em>the envelope left on the seat</em>).</li>
+            <li><strong>Relative Pronouns:</strong> <em>whose</em> shows possession/belonging.</li>
+          </ul>
+        </div>
+
+        <div class="guide-block">
+          <h4>6. Modals, Adverbs &amp; Comparisons (Station 6)</h4>
+          <ul>
+            <li><strong>Adverbs &amp; Comparisons:</strong> Adverbs modify verbs/actions (<em>good &rarr; well</em>); multi-syllable <em>-ly</em> adverbs compare with <em>more / most</em>.</li>
+            <li><strong>Past Modals:</strong> <em>must have + 3rd form</em> (strong deduction); <em>shouldn't have + 3rd form</em> (criticism/regret about a past action).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       MODAL 2: PRINTABLE HANDOUT
+       ======================================================================= -->
+  <div id="print-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="print-title">
+    <div class="modal-box festive-brass-panel">
+      <div class="modal-top no-print">
+        <h3 id="print-title" style="margin: 0; font-size: 1.12rem;">🖨️ Printable Handout — Operation: Midnight Express</h3>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-pine btn-sm" onclick="window.print()">Print / Save PDF</button>
+          <button type="button" class="btn btn-dark btn-sm" onclick="closePrintModal()">Close ✕</button>
+        </div>
+      </div>
+      <div id="print-content" class="modal-content"></div>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    /* -----------------------------------------------------------------------
+       SAFE HOLIDAY CHIME SYNTHESIZER (NO EXTERNAL AUDIO FILES)
+       ----------------------------------------------------------------------- */
+    const HolidayAudio = {
+      enabled: true,
+      ctx: null,
+      tone(freq, type, duration, delay, volume) {
+        if (!this.enabled) return;
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+          if (!this.ctx) {
+            this.ctx = new AudioContextClass();
+          }
+          if (this.ctx.state === "suspended") {
+            this.ctx.resume();
+          }
+          const startAt = this.ctx.currentTime + (delay || 0);
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type || "triangle";
+          osc.frequency.setValueAtTime(freq, startAt);
+          gain.gain.setValueAtTime(volume || 0.09, startAt);
+          gain.gain.exponentialRampToValueAtTime(0.001, startAt + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(startAt);
+          osc.stop(startAt + duration);
+        } catch (e) {
+          /* Ignore audio errors when blocked by browser policy */
+        }
+      },
+      tap() { this.tone(540, "triangle", 0.06, 0, 0.06); },
+      miss() {
+        this.tone(190, "sawtooth", 0.16, 0, 0.08);
+        this.tone(150, "sawtooth", 0.22, 0.13, 0.08);
+      },
+      pass() {
+        this.tone(523.25, "sine", 0.13, 0, 0.09);
+        this.tone(659.25, "sine", 0.13, 0.1, 0.09);
+        this.tone(783.99, "sine", 0.22, 0.2, 0.1);
+      },
+      chimeUnlock() {
+        this.tone(587.33, "triangle", 0.12, 0, 0.1);
+        this.tone(739.99, "triangle", 0.12, 0.1, 0.1);
+        this.tone(880.00, "triangle", 0.12, 0.2, 0.1);
+        this.tone(1174.66, "triangle", 0.3, 0.3, 0.12);
+      }
+    };
+
+    function toggleSound() {
+      HolidayAudio.enabled = !HolidayAudio.enabled;
+      const icon = document.getElementById("sound-icon");
+      const label = document.getElementById("sound-label");
+      if (icon) icon.textContent = HolidayAudio.enabled ? "🔔" : "🔕";
+      if (label) label.textContent = HolidayAudio.enabled ? "Chimes On" : "Muted";
+    }
+
+    function toggleSnow() {
+      const snow = document.getElementById("snow-layer");
+      const btn = document.getElementById("snow-toggle-btn");
+      if (!snow || !btn) return;
+      const isHidden = snow.classList.toggle("hidden");
+      btn.textContent = isHidden ? "❄️ Snow Off" : "❄️ Snow On";
+    }
+
+    /* -----------------------------------------------------------------------
+       NORMALIZATION & ANSWER CHECKING
+       ----------------------------------------------------------------------- */
+    function normalizeText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[.,!?;:"'’`]+$/g, "")
+        .replace(/’/g, "'")
+        .replace(/\bhas not\b/g, "hasn't")
+        .replace(/\bhave not\b/g, "haven't")
+        .replace(/\bhad not\b/g, "hadn't")
+        .replace(/\bwas not\b/g, "wasn't")
+        .replace(/\bwere not\b/g, "weren't")
+        .replace(/\bwould not\b/g, "wouldn't")
+        .replace(/\bshould not\b/g, "shouldn't")
+        .replace(/\bcould not\b/g, "couldn't")
+        .replace(/\bdo not\b/g, "don't")
+        .replace(/\bdoes not\b/g, "doesn't")
+        .replace(/\bdid not\b/g, "didn't")
+        .replace(/\bwill not\b/g, "won't")
+        .replace(/\bcannot\b/g, "can't")
+        .replace(/\bcan not\b/g, "can't")
+        .replace(/\s+/g, " ");
+    }
+
+    function checkTask(task, response) {
+      if (task.type === "mc") {
+        return response === task.correctIndex;
+      }
+      const cleaned = normalizeText(response);
+      if (!cleaned) return false;
+      return task.accepted.some(function (candidate) {
+        return normalizeText(candidate) === cleaned;
+      });
+    }
+
+    /* -----------------------------------------------------------------------
+       6 STATIONS (24 TASKS + 6 DEDUCTION LOCKS -> FINAL CODE: STAR24)
+       ----------------------------------------------------------------------- */
+    const ESCAPE_STATIONS = [
+      {
+        id: 1,
+        shortLabel: "1. Timetable",
+        title: "Station 1: The Frozen Timetable",
+        grammarTopic: "Tenses & Vor-/Nachzeitigkeit",
+        briefing: "Christmas frost has locked the platform departure board. Complete all four timeline tasks—two multiple-choice questions and two typed verb forms—then verify the terminal.",
+        riddle: "Deduction Riddle: Look at the Past Perfect verb phrase in Task 3 ('had left'). Count the letters in the second word ('left' = L-E-F-T). Enter that digit into Brass Lock #1!",
+        lockDigit: "4",
+        keyChar: "S",
+        tasks: [
+          {
+            id: "st1_t1",
+            type: "mc",
+            prompt: "1. While the conductor _______ holiday tickets on Platform 4, the station bell suddenly _______.",
+            options: [
+              "checked / was ringing",
+              "was checking / rang",
+              "has checked / rang",
+              "had checked / has rung"
+            ],
+            correctIndex: 1,
+            hint: "Eine laufende Handlung in der Vergangenheit (Past Progressive: was/were + -ing) wird durch ein plötzliches Ereignis (Simple Past) unterbrochen."
+          },
+          {
+            id: "st1_t2",
+            type: "mc",
+            prompt: "2. Look at those thick icicles hanging from the power line! The express _______ delayed.",
+            options: [
+              "is going to be",
+              "was",
+              "has been",
+              "will have"
+            ],
+            correctIndex: 0,
+            hint: "Wenn es in der Gegenwart deutliche sichtbare Anzeichen gibt ('Look at those thick icicles...'), nutzt man das 'going to'-Future."
+          },
+          {
+            id: "st1_t3",
+            type: "input",
+            prompt: "3. Type the Past Perfect verb phrase (Vorvergangenheit): When the inspector reached the platform, the snowplough _______ already _______ (leave).",
+            placeholder: "Type two words (e.g. had gone)...",
+            accepted: ["had left", "had already left"],
+            hint: "Vorvergangenheit (Past Perfect): Das Wegfahren geschah NOCH VOR der Ankunft ('reached'). Bilde 'had + 3. Verbform von leave'."
+          },
+          {
+            id: "st1_t4",
+            type: "input",
+            prompt: "4. Type the verb form: Nobody _______ (be) in the signal cabin since the snowstorm started at dusk.",
+            placeholder: "Type two words (e.g. has worked)...",
+            accepted: ["has been"],
+            hint: "Mit 'since' (Beginn in der Vergangenheit, Wirkung bis jetzt) steht das Present Perfect: 'has + 3. Verbform von be'."
+          }
+        ]
+      },
+      {
+        id: 2,
+        shortLabel: "2. Cargo Bay",
+        title: "Station 2: The Cargo Manifest",
+        grammarTopic: "Active & Passive Voice (Handlung vs. Urheber)",
+        briefing: "Holiday parcels in the baggage car have mixed-up voice labels. Complete all four items to unlock the Cargo Bay deduction riddle.",
+        riddle: "Deduction Riddle: Look at the passive verb phrase in Task 3 ('was hidden'). Count how many words are in that verb phrase ('was hidden'). Enter that digit into Brass Lock #2!",
+        lockDigit: "2",
+        keyChar: "T",
+        tasks: [
+          {
+            id: "st2_t1",
+            type: "mc",
+            prompt: "1. Every December, thousands of Christmas gifts _______ to northern villages by rail.",
+            options: [
+              "deliver",
+              "are delivered",
+              "were delivering",
+              "have delivered"
+            ],
+            correctIndex: 1,
+            hint: "Regelmäßigkeit ('Every December') + Passiv ('werden geliefert') = Simple Present Passive (am/is/are + 3. Form)."
+          },
+          {
+            id: "st2_t2",
+            type: "mc",
+            prompt: "2. Which sentence is in the ACTIVE voice and puts the focus on the person who pulled the lever?",
+            options: [
+              "The emergency brake was pulled by a cloaked figure.",
+              "A cloaked figure pulled the emergency brake.",
+              "The emergency brake has been checked twice.",
+              "Emergency brakes are tested before each trip."
+            ],
+            correctIndex: 1,
+            hint: "Im Aktiv steht die handelnde Person (Agent) direkt als Subjekt vor dem Verb und führt die Handlung aus."
+          },
+          {
+            id: "st2_t3",
+            type: "input",
+            prompt: "3. Change to Simple Past Passive (omit 'someone'): 'Someone hid the brass key inside a gift box.' → The brass key _______ inside a gift box.",
+            placeholder: "Type two words (e.g. was found)...",
+            accepted: ["was hidden"],
+            hint: "Simple Past Passive bildet man mit 'was/were + Past Participle (3. Verbform von hide)'."
+          },
+          {
+            id: "st2_t4",
+            type: "input",
+            prompt: "4. Change to Present Perfect Passive: 'The crew hasn't repaired the carriage heater yet.' → The carriage heater _______ yet.",
+            placeholder: "Type three words (e.g. hasn't been checked)...",
+            accepted: ["hasn't been repaired", "has not been repaired"],
+            hint: "Verneintes Present Perfect Passive: 'hasn't been + 3. Verbform von repair'."
+          }
+        ]
+      },
+      {
+        id: 3,
+        shortLabel: "3. Switches",
+        title: "Station 3: The Switchman's Dilemma",
+        grammarTopic: "If-Clauses (Type I–III) & 'I wish'",
+        briefing: "The track switch relay uses conditional logic and wishes. Solve all four tasks to reveal the deduction clue.",
+        riddle: "Deduction Riddle: Look at the main verb (second word) in Task 3 ('would install' → 'install'). Count the letters in 'install' (I-N-S-T-A-L-L). Enter that digit into Brass Lock #3!",
+        lockDigit: "7",
+        keyChar: "A",
+        tasks: [
+          {
+            id: "st3_t1",
+            type: "mc",
+            prompt: "1. Type I Conditional: If the signalman _______ the switch now, the train _______ the bridge safely.",
+            options: [
+              "will set / crosses",
+              "sets / will cross",
+              "set / will cross",
+              "had set / would cross"
+            ],
+            correctIndex: 1,
+            hint: "If-Clause Typ I: Im if-Satz steht Simple Present (kein 'will' im if-Teil!), im Hauptsatz 'will + Infinitive'."
+          },
+          {
+            id: "st3_t2",
+            type: "mc",
+            prompt: "2. Type III Conditional: If the keeper _______ the gate earlier, the deer _______ onto the line.",
+            options: [
+              "closed / wouldn't walk",
+              "has closed / won't walk",
+              "had closed / wouldn't have walked",
+              "would close / hadn't walked"
+            ],
+            correctIndex: 2,
+            hint: "If-Clause Typ III (Vergangenheit/nicht eingetreten): 'If + Past Perfect (had + 3. Form)', Hauptsatz 'would (not) have + 3. Form'."
+          },
+          {
+            id: "st3_t3",
+            type: "input",
+            prompt: "3. Type II Conditional: If I were in charge of the railway, I _______ (install) warm tracks on every hill.",
+            placeholder: "Type two words (e.g. would build)...",
+            accepted: ["would install"],
+            hint: "If-Clause Typ II (gedachtes/hypothetisches Szenario): Im Hauptsatz steht 'would + Infinitive'."
+          },
+          {
+            id: "st3_t4",
+            type: "input",
+            prompt: "4. Past Regret ('I wish'): 'I didn't bring my wool scarf!' → I wish I _______ (bring) my wool scarf!",
+            placeholder: "Type two words (e.g. had taken)...",
+            accepted: ["had brought"],
+            hint: "Ein Bedauern über Vergangenes nach 'I wish' steht im Past Perfect ('had + 3. Verbform von bring')."
+          }
+        ]
+      },
+      {
+        id: 4,
+        shortLabel: "4. Telegrams",
+        title: "Station 4: Intercepted Telegrams",
+        grammarTopic: "Reported Speech (Backshift, Questions & Commands)",
+        briefing: "Holiday messages from stations along the route need clean Reported Speech conversions. Complete all four items.",
+        riddle: "Deduction Riddle: Look at the Reported Command in Task 4 ('not to leave'). Count how many words are in that phrase ('not to leave'). Enter that digit into Brass Lock #4!",
+        lockDigit: "3",
+        keyChar: "R",
+        tasks: [
+          {
+            id: "st4_t1",
+            type: "mc",
+            prompt: "1. Direct: Clerk: 'The snowplough arrived here yesterday.' → Reported: The clerk said it _______ there _______.",
+            options: [
+              "arrived / yesterday",
+              "had arrived / the day before",
+              "has arrived / the next day",
+              "was arriving / yesterday"
+            ],
+            correctIndex: 1,
+            hint: "Nach 'said' (Vergangenheit): Simple Past wird zu Past Perfect ('had arrived'), und 'yesterday' wird zu 'the day before'."
+          },
+          {
+            id: "st4_t2",
+            type: "mc",
+            prompt: "2. Direct: Inspector: 'Did anyone lock the mail van?' → Reported: The inspector asked _______ anyone _______ the mail van.",
+            options: [
+              "if / had locked",
+              "that / locked",
+              "whether / did lock",
+              "if / locks"
+            ],
+            correctIndex: 0,
+            hint: "Indirekte Ja/Nein-Fragen nutzen 'if' oder 'whether', normale Satzstellung (ohne 'did') und Backshift ins Past Perfect."
+          },
+          {
+            id: "st4_t3",
+            type: "input",
+            prompt: "3. Direct: Witness: 'I saw a red lantern near the engine.' → Reported: The witness said she _______ (see) a red lantern near the engine.",
+            placeholder: "Type two words (e.g. had met)...",
+            accepted: ["had seen"],
+            hint: "Backshift nach 'said': Simple Past ('saw') geht eine Zeitstufe zurück ins Past Perfect ('had + 3. Verbform von see')."
+          },
+          {
+            id: "st4_t4",
+            type: "input",
+            prompt: "4. Reported Command: Guard: 'Don't leave bags in the aisle!' → The guard told travelers _______ bags in the aisle.",
+            placeholder: "Type three words (e.g. not to put)...",
+            accepted: ["not to leave"],
+            hint: "Verneinte Aufforderungen in der indirekten Rede: 'told + Person + not to + Infinitive'."
+          }
+        ]
+      },
+      {
+        id: 5,
+        shortLabel: "5. Blueprints",
+        title: "Station 5: The Boiler Room Blueprints",
+        grammarTopic: "Infinite Verb Forms & Relative Clauses",
+        briefing: "Simplify and complete the engine room notes using gerunds, infinitives, participles, and relative pronouns.",
+        riddle: "Deduction Riddle: Count the letters in the Relative Pronoun in Task 4 ('whose' = W-H-O-S-E). Enter that digit into Brass Lock #5!",
+        lockDigit: "5",
+        keyChar: "2",
+        tasks: [
+          {
+            id: "st5_t1",
+            type: "mc",
+            prompt: "1. The whole crew is looking forward to _______ the mountain station before midnight.",
+            options: [
+              "reach",
+              "reaching",
+              "reached",
+              "have reached"
+            ],
+            correctIndex: 1,
+            hint: "In 'look forward to' ist 'to' eine Präposition – nach Präpositionen folgt im Englischen das Gerund (-ing)."
+          },
+          {
+            id: "st5_t2",
+            type: "mc",
+            prompt: "2. The engineer managed _______ the valve without _______ the main steam line.",
+            options: [
+              "fixing / to stop",
+              "to fix / stopping",
+              "fix / stop",
+              "to fix / to stop"
+            ],
+            correctIndex: 1,
+            hint: "Nach 'manage' steht 'to + Infinitive' ('to fix'), nach der Präposition 'without' steht das Gerund ('stopping')."
+          },
+          {
+            id: "st5_t3",
+            type: "input",
+            prompt: "3. Shorten with a Participle: 'The note which was left on the desk gives the route code.' → The note _______ on the desk gives the route code.",
+            placeholder: "Type one word (Past Participle)...",
+            accepted: ["left"],
+            hint: "Passivische Satzverkürzung ('which was left' = die zurückgelassen wurde): nutze das Past Participle (3. Form von 'leave')."
+          },
+          {
+            id: "st5_t4",
+            type: "input",
+            prompt: "4. Type the Relative Pronoun: That is the driver _______ quick reaction saved the Christmas train.",
+            placeholder: "Type one word (who / which / whose)...",
+            accepted: ["whose"],
+            hint: "Zugehörigkeit/Besitz ('dessen schnelle Reaktion' = his quick reaction) verlangt das Relativpronomen 'whose'."
+          }
+        ]
+      },
+      {
+        id: 6,
+        shortLabel: "6. Safe",
+        title: "Station 6: The Conductor's Safe",
+        grammarTopic: "Modals, Adverbs & Comparisons",
+        briefing: "You have reached the Conductor's holiday safe! Solve all four tasks on adverbs, comparisons, and past modals to unlock the final key.",
+        riddle: "Deduction Riddle: Count the letters in the adverb 'quietly' (Q-U-I-E-T-L-Y) from Task 1 and add 1 (7 + 1). Enter that digit into Brass Lock #6!",
+        lockDigit: "8",
+        keyChar: "4",
+        tasks: [
+          {
+            id: "st6_t1",
+            type: "mc",
+            prompt: "1. Adverb comparison: Even in deep snow, the Express glides _______ and _______ than the old mail coach.",
+            options: [
+              "more quiet / reliable",
+              "more quietly / more reliably",
+              "quieter / more reliable",
+              "most quietly / reliably"
+            ],
+            correctIndex: 1,
+            hint: "Hier wird beschrieben, WIE der Zug fährt ('glides') -> Adverb auf -ly, gesteigert mit 'more'."
+          },
+          {
+            id: "st6_t2",
+            type: "mc",
+            prompt: "2. Past criticism: The cabin door was left open! The porter _______ it unlocked in the blizzard.",
+            options: [
+              "shouldn't have left",
+              "mustn't leave",
+              "can't have leaving",
+              "wouldn't leave"
+            ],
+            correctIndex: 0,
+            hint: "Kritik an einem vergangenen Verhalten ('hätte nicht offen lassen dürfen'): 'shouldn't have + Past Participle'."
+          },
+          {
+            id: "st6_t3",
+            type: "input",
+            prompt: "3. Past deduction: Look at those fresh boot prints by the door! The helper _______ (must / leave) just a moment ago.",
+            placeholder: "Type three words (e.g. must have gone)...",
+            accepted: ["must have left"],
+            hint: "Starkes logisches Schlussfolgern über Vergangenes ('muss gegangen sein'): 'must have + 3. Verbform von leave'."
+          },
+          {
+            id: "st6_t4",
+            type: "input",
+            prompt: "4. Type the adverb for 'good': Even on icy rails, the conductor steered the train _______ (good).",
+            placeholder: "Type one word...",
+            accepted: ["well"],
+            hint: "Die unregelmäßige Adverbform zu 'good' lautet 'well'."
+          }
+        ]
+      }
+    ];
+
+    /* -----------------------------------------------------------------------
+       APPLICATION STATE
+       ----------------------------------------------------------------------- */
+    const appState = {
+      teamName: "Winter Crew",
+      currentTab: 1, // 1..6 or "vault"
+      answers: {},
+      checkedMap: {}, // { taskId: true/false }
+      stationCleared: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
+      verifySummary: {}, // { stationId: { okCount, attempts, missing } }
+      totalMisses: 0,
+      cooldownSec: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
+      cooldownTotal: { 1: 45, 2: 45, 3: 45, 4: 45, 5: 45, 6: 45 },
+      openHints: {},
+      lockOpened: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
+      dials: { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "" },
+      vaultCode: "",
+      secondsRemaining: 45 * 60,
+      paused: false,
+      showClock: true,
+      clockId: null
+    };
+
+    /* -----------------------------------------------------------------------
+       CLOCK & COOLDOWN TIMER
+       ----------------------------------------------------------------------- */
+    function formatClock(totalSec) {
+      const safe = Math.max(0, totalSec);
+      const mins = Math.floor(safe / 60);
+      const secs = safe % 60;
+      return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+    }
+
+    function refreshClockText() {
+      const el = document.getElementById("timer-value");
+      if (el) el.textContent = formatClock(appState.secondsRemaining);
+    }
+
+    function startClock() {
+      if (appState.clockId) clearInterval(appState.clockId);
+      appState.clockId = setInterval(function () {
+        if (!appState.paused && appState.secondsRemaining > 0) {
+          appState.secondsRemaining -= 1;
+          refreshClockText();
+        }
+        let tickCooldown = false;
+        for (let id = 1; id <= 6; id++) {
+          if (appState.cooldownSec[id] > 0) {
+            appState.cooldownSec[id] -= 1;
+            tickCooldown = true;
+          }
+        }
+        if (tickCooldown && typeof appState.currentTab === "number") {
+          const activeId = appState.currentTab;
+          const rem = appState.cooldownSec[activeId];
+          const max = appState.cooldownTotal[activeId] || 45;
+          const cdText = document.getElementById("cd-seconds");
+          const cdBar = document.getElementById("cd-bar");
+          const btn = document.getElementById("verify-station-btn");
+          if (rem > 0) {
+            if (cdText) cdText.textContent = rem + "s";
+            if (cdBar) cdBar.style.width = Math.round((rem / max) * 100) + "%";
+            if (btn) {
+              btn.disabled = true;
+              btn.textContent = "Cooldown (" + rem + "s)";
+            }
+          } else {
+            renderStationWorkspace();
+          }
+        }
+      }, 1000);
+    }
+
+    function toggleTimerPause() {
+      appState.paused = !appState.paused;
+      const btn = document.getElementById("timer-pause-btn");
+      if (btn) btn.textContent = appState.paused ? "Resume" : "Pause";
+    }
+
+    function toggleTimerVisibility() {
+      appState.showClock = !appState.showClock;
+      const cluster = document.getElementById("timer-cluster");
+      const showBtn = document.getElementById("timer-show-btn");
+      if (cluster) cluster.classList.toggle("hidden", !appState.showClock);
+      if (showBtn) showBtn.classList.toggle("hidden", appState.showClock);
+    }
+
+    /* -----------------------------------------------------------------------
+       GAME ACTIONS
+       ----------------------------------------------------------------------- */
+    function startGame() {
+      HolidayAudio.tap();
+      const input = document.getElementById("team-name-input");
+      const chosen = input ? input.value.trim() : "";
+      appState.teamName = chosen || "Winter Crew";
+
+      const badge = document.getElementById("hud-team-badge");
+      const nameSpan = document.getElementById("hud-team-name");
+      if (nameSpan) nameSpan.textContent = appState.teamName;
+      if (badge) badge.classList.remove("hidden");
+
+      document.getElementById("screen-intro").classList.add("hidden");
+      document.getElementById("screen-game").classList.remove("hidden");
+
+      startClock();
+      renderTabs();
+      renderStationWorkspace();
+    }
+
+    function switchTab(target) {
+      HolidayAudio.tap();
+      appState.currentTab = target;
+      renderTabs();
+      renderStationWorkspace();
+    }
+
+    function chooseOption(stationId, taskId, idx) {
+      if (appState.stationCleared[stationId]) return;
+      HolidayAudio.tap();
+      appState.answers[taskId] = idx;
+      if (appState.checkedMap[taskId] === false) {
+        delete appState.checkedMap[taskId];
+      }
+      renderStationWorkspace();
+    }
+
+    function editTypedAnswer(taskId, text) {
+      appState.answers[taskId] = text;
+      if (appState.checkedMap[taskId] === false) {
+        delete appState.checkedMap[taskId];
+      }
+    }
+
+    function toggleTaskHint(taskId) {
+      HolidayAudio.tap();
+      appState.openHints[taskId] = !appState.openHints[taskId];
+      renderStationWorkspace();
+    }
+
+    function verifyStationTasks(stationId) {
+      if (appState.stationCleared[stationId]) return;
+      if (appState.cooldownSec[stationId] > 0) return;
+
+      const station = ESCAPE_STATIONS.find(function (s) { return s.id === stationId; });
+      if (!station) return;
+
+      const prevAttempts = appState.verifySummary[stationId] ? appState.verifySummary[stationId].attempts : 0;
+
+      // Require all 4 tasks to have an entry before running verification
+      for (let i = 0; i < station.tasks.length; i++) {
+        const t = station.tasks[i];
+        const val = appState.answers[t.id];
+        const empty = t.type === "mc" ? (val === undefined || val === null) : (!String(val || "").trim());
+        if (empty) {
+          HolidayAudio.miss();
+          appState.verifySummary[stationId] = {
+            okCount: 0,
+            attempts: prevAttempts,
+            missing: true
+          };
+          renderStationWorkspace();
+          return;
+        }
+      }
+
+      let rightCount = 0;
+      station.tasks.forEach(function (t) {
+        const passed = checkTask(t, appState.answers[t.id]);
+        appState.checkedMap[t.id] = passed;
+        if (passed) rightCount += 1;
+      });
+
+      if (rightCount === 4) {
+        HolidayAudio.pass();
+        appState.stationCleared[stationId] = true;
+        appState.verifySummary[stationId] = {
+          okCount: 4,
+          attempts: prevAttempts + 1,
+          missing: false
+        };
+      } else {
+        HolidayAudio.miss();
+        const nextAttempt = prevAttempts + 1;
+        const waitSec = nextAttempt === 1 ? 45 : 60;
+        appState.totalMisses += 1;
+        appState.verifySummary[stationId] = {
+          okCount: rightCount,
+          attempts: nextAttempt,
+          missing: false
+        };
+        appState.cooldownSec[stationId] = waitSec;
+        appState.cooldownTotal[stationId] = waitSec;
+
+        // Open grammar hints automatically on tasks that need revision
+        station.tasks.forEach(function (t) {
+          if (!appState.checkedMap[t.id]) {
+            appState.openHints[t.id] = true;
+          }
+        });
+      }
+
+      renderStationWorkspace();
+    }
+
+    function editDial(stationId, val) {
+      appState.dials[stationId] = String(val || "").replace(/[^0-9]/g, "").slice(0, 1);
+    }
+
+    function tryBrassLock(stationId) {
+      const station = ESCAPE_STATIONS.find(function (s) { return s.id === stationId; });
+      if (!station || !appState.stationCleared[stationId]) return;
+
+      const guess = (appState.dials[stationId] || "").trim();
+      if (guess === station.lockDigit) {
+        HolidayAudio.chimeUnlock();
+        appState.lockOpened[stationId] = true;
+        renderTabs();
+        renderStationWorkspace();
+      } else {
+        HolidayAudio.miss();
+        const panel = document.getElementById("lock-panel");
+        if (panel) {
+          panel.classList.remove("animate-shake");
+          void panel.offsetWidth;
+          panel.classList.add("animate-shake");
+        }
+        const err = document.getElementById("lock-feedback");
+        if (err) {
+          err.textContent = "That digit does not fit Brass Lock #" + station.id + ". Re-read the Deduction Riddle above!";
+          err.classList.remove("hidden");
+        }
+      }
+    }
+
+    function editVaultCode(val) {
+      appState.vaultCode = String(val || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
+    }
+
+    function checkMasterVault() {
+      const attempt = (appState.vaultCode || "").trim().toUpperCase();
+      if (attempt === "STAR24") {
+        HolidayAudio.chimeUnlock();
+        if (appState.clockId) clearInterval(appState.clockId);
+        showVictoryScreen();
+      } else {
+        HolidayAudio.miss();
+        const box = document.getElementById("vault-panel");
+        if (box) {
+          box.classList.remove("animate-shake");
+          void box.offsetWidth;
+          box.classList.add("animate-shake");
+        }
+        const err = document.getElementById("vault-feedback");
+        if (err) {
+          err.textContent = "Override rejected! Collect all six characters from Locks #1–#6 and enter them in order.";
+          err.classList.remove("hidden");
+        }
+      }
+    }
+
+    function showVictoryScreen() {
+      document.getElementById("screen-game").classList.add("hidden");
+      document.getElementById("screen-victory").classList.remove("hidden");
+
+      document.getElementById("cert-team-name").textContent = appState.teamName;
+      document.getElementById("cert-time").textContent = formatClock(appState.secondsRemaining);
+      document.getElementById("cert-misses").textContent = String(appState.totalMisses);
+
+      let honor = "🌟 Golden Bell Crew";
+      if (appState.totalMisses >= 5) {
+        honor = "🎄 Festive Conductor";
+      } else if (appState.totalMisses >= 2) {
+        honor = "❄️ Silver Snowflake Team";
+      }
+      document.getElementById("cert-honor").textContent = honor;
+    }
+
+    function resetGame() {
+      HolidayAudio.tap();
+      appState.currentTab = 1;
+      appState.answers = {};
+      appState.checkedMap = {};
+      appState.stationCleared = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
+      appState.verifySummary = {};
+      appState.totalMisses = 0;
+      appState.cooldownSec = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+      appState.cooldownTotal = { 1: 45, 2: 45, 3: 45, 4: 45, 5: 45, 6: 45 };
+      appState.openHints = {};
+      appState.lockOpened = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
+      appState.dials = { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "" };
+      appState.vaultCode = "";
+      appState.secondsRemaining = 45 * 60;
+      appState.paused = false;
+      refreshClockText();
+
+      document.getElementById("screen-victory").classList.add("hidden");
+      document.getElementById("screen-game").classList.add("hidden");
+      document.getElementById("screen-intro").classList.remove("hidden");
+    }
+
+    /* -----------------------------------------------------------------------
+       DOM RENDERERS
+       ----------------------------------------------------------------------- */
+    function esc(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderTabs() {
+      const nav = document.getElementById("station-tabs");
+      if (!nav) return;
+
+      const stationButtons = ESCAPE_STATIONS.map(function (st) {
+        const active = appState.currentTab === st.id;
+        const opened = appState.lockOpened[st.id];
+        const cls = "station-tab" + (active ? " active" : "") + (opened ? " unlocked" : "");
+        return (
+          '<button type="button" class="' + cls + '" onclick="switchTab(' + st.id + ')">' +
+            '<div class="tab-top">' +
+              '<span>' + esc(st.shortLabel) + '</span>' +
+              '<span>' + (opened ? "🔓" : "🔒") + '</span>' +
+            '</div>' +
+            '<div class="tab-sub">' +
+              (opened ? ("Key #" + st.id + ": " + st.keyChar) : "Locked") +
+            '</div>' +
+          '</button>'
+        );
+      }).join("");
+
+      const openCount = Object.values(appState.lockOpened).filter(Boolean).length;
+      const vaultActive = appState.currentTab === "vault";
+      const vaultCls = "station-tab" + (vaultActive ? " active" : "") + (openCount === 6 ? " unlocked" : "");
+      const vaultBtn =
+        '<button type="button" class="' + vaultCls + '" onclick="switchTab(\'vault\')">' +
+          '<div class="tab-top">' +
+            '<span>🗝️ Vault</span>' +
+            '<span>' + openCount + '/6</span>' +
+          '</div>' +
+          '<div class="tab-sub">' + (openCount === 6 ? "Ready!" : "Final Lock") + '</div>' +
+        '</button>';
+
+      nav.innerHTML = stationButtons + vaultBtn;
+    }
+
+    function renderStationWorkspace() {
+      const host = document.getElementById("station-workspace");
+      if (!host) return;
+
+      if (appState.currentTab === "vault") {
+        renderVaultView(host);
+        return;
+      }
+
+      const station = ESCAPE_STATIONS.find(function (s) { return s.id === appState.currentTab; }) || ESCAPE_STATIONS[0];
+      const cleared = appState.stationCleared[station.id];
+      const opened = appState.lockOpened[station.id];
+      const wait = appState.cooldownSec[station.id] || 0;
+      const waitMax = appState.cooldownTotal[station.id] || 45;
+      const summary = appState.verifySummary[station.id];
+
+      const tasksMarkup = station.tasks.map(function (task) {
+        const hintOpen = !!appState.openHints[task.id];
+        const ansVal = appState.answers[task.id];
+        const resultFlag = appState.checkedMap[task.id]; // true, false, or undefined
+        const isRight = cleared || resultFlag === true;
+        const isWrong = !cleared && resultFlag === false;
+
+        let cardClass = "task-card";
+        if (isRight) cardClass += " state-ok";
+        else if (isWrong) cardClass += " state-wrong";
+
+        let badge = "";
+        if (isRight) {
+          badge = '<span class="status-chip ok">✓ Correct</span>';
+        } else if (isWrong) {
+          badge = '<span class="status-chip wrong">✗ Incorrect — check hint</span>';
+        }
+
+        let inputMarkup = "";
+        if (task.type === "mc") {
+          inputMarkup = '<div class="mc-choices">' + task.options.map(function (optText, idx) {
+            const chosen = ansVal === idx;
+            let btnClass = "choice-btn";
+            if (chosen) {
+              if (isRight) btnClass += " picked-ok";
+              else if (isWrong) btnClass += " picked-wrong";
+              else btnClass += " picked";
+            }
+            return (
+              '<button type="button" class="' + btnClass + '" ' + (isRight ? "disabled" : "") +
+              ' onclick="chooseOption(' + station.id + ', \'' + task.id + '\', ' + idx + ')">' +
+                '<span class="choice-tag">' + String.fromCharCode(65 + idx) + '</span>' +
+                '<span>' + esc(optText) + '</span>' +
+              '</button>'
+            );
+          }).join("") + '</div>';
+        } else {
+          inputMarkup =
+            '<input type="text" class="typed-input" ' +
+            'placeholder="' + esc(task.placeholder || "Type answer...") + '" ' +
+            'value="' + esc(ansVal || "") + '" ' +
+            (isRight ? "disabled" : "") + ' ' +
+            'oninput="editTypedAnswer(\'' + task.id + '\', this.value)" />';
+        }
+
+        return (
+          '<div class="' + cardClass + '">' +
+            '<div class="task-head">' +
+              '<p class="task-question">' + esc(task.prompt) + '</p>' +
+              badge +
+            '</div>' +
+            inputMarkup +
+            '<div class="hint-bar">' +
+              '<button type="button" class="hint-trigger" onclick="toggleTaskHint(\'' + task.id + '\')">' +
+                (hintOpen ? "Hide Grammar Hint ▲" : "💡 Grammar Hint ▼") +
+              '</button>' +
+            '</div>' +
+            (hintOpen ? ('<div class="hint-callout"><strong>Grammar Hint:</strong> ' + esc(task.hint) + '</div>') : "") +
+          '</div>'
+        );
+      }).join("");
+
+      let feedbackText = "Answer all 4 tasks, then click <strong>Verify Terminal (4/4)</strong>.";
+      if (cleared) {
+        feedbackText = '<span style="color: #6ee7b7;">🎄 All 4/4 tasks verified! Solve the Deduction Riddle below to turn Brass Lock #' + station.id + '.</span>';
+      } else if (summary && summary.missing) {
+        feedbackText = '<span style="color: #fde047;">⚠️ Please fill in all 4 tasks before verifying this station.</span>';
+      } else if (summary) {
+        feedbackText = '<span style="color: #fca5a5;">❌ Score: <strong>' + summary.okCount + ' / 4 correct</strong>. Revise the red tasks using their Grammar Hints!</span>';
+      }
+
+      let cooldownMarkup = "";
+      if (wait > 0 && !cleared) {
+        const pct = Math.max(0, Math.min(100, Math.round((wait / waitMax) * 100)));
+        cooldownMarkup =
+          '<div class="cooldown-box">' +
+            '<div>⏳ Security Cooldown: <span id="cd-seconds">' + wait + 's</span> — Read the Grammar Hints before re-checking</div>' +
+            '<div class="cooldown-track"><div id="cd-bar" class="cooldown-fill" style="width: ' + pct + '%;"></div></div>' +
+          '</div>';
+      }
+
+      let lockMarkup = "";
+      if (!cleared) {
+        lockMarkup =
+          '<div id="lock-panel" class="lock-panel muted">' +
+            '<div style="font-weight: 800; font-size: 1rem;">🔒 Brass Lock #' + station.id + ' (Locked)</div>' +
+            '<p style="margin: 6px 0 0; font-size: 0.88rem;">Verify all 4 grammar tasks above to reveal the Deduction Riddle for this lock.</p>' +
+          '</div>';
+      } else if (opened) {
+        const nextBtn = station.id < 6
+          ? '<button type="button" class="btn btn-gold" onclick="switchTab(' + (station.id + 1) + ')">Next Station (' + (station.id + 1) + '/6) &rarr;</button>'
+          : '<button type="button" class="btn btn-gold" onclick="switchTab(\'vault\')">Open Master Vault &rarr;</button>';
+        lockMarkup =
+          '<div id="lock-panel" class="lock-panel">' +
+            '<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">' +
+              '<div>' +
+                '<div style="color: #6ee7b7; font-weight: 800; font-size: 1.05rem;">🔓 Brass Lock #' + station.id + ' Opened!</div>' +
+                '<p style="margin: 4px 0 0; font-size: 0.9rem;">Master Key Fragment #' + station.id + ' collected: <strong class="font-mono" style="color: #fde047; font-size: 1.15rem;">' + station.keyChar + '</strong></p>' +
+              '</div>' +
+              nextBtn +
+            '</div>' +
+          '</div>';
+      } else {
+        lockMarkup =
+          '<div id="lock-panel" class="lock-panel">' +
+            '<div style="color: var(--gold-bright); font-weight: 800; font-size: 1.05rem;">🔑 Brass Lock #' + station.id + ' — Deduction Riddle</div>' +
+            '<p style="margin: 6px 0 0; font-size: 0.93rem;">' + esc(station.riddle) + '</p>' +
+            '<div class="dial-controls">' +
+              '<input type="text" inputmode="numeric" maxlength="1" class="dial-box" aria-label="Single digit for Brass Lock ' + station.id + '" ' +
+              'value="' + esc(appState.dials[station.id] || "") + '" ' +
+              'oninput="editDial(' + station.id + ', this.value)" ' +
+              'onkeydown="if(event.key===\'Enter\') tryBrassLock(' + station.id + ')" />' +
+              '<button type="button" class="btn btn-gold" onclick="tryBrassLock(' + station.id + ')">Unlock Brass Lock #' + station.id + '</button>' +
+            '</div>' +
+            '<p id="lock-feedback" class="hidden" style="color: #fca5a5; font-weight: 700; font-size: 0.88rem; margin: 10px 0 0;"></p>' +
+          '</div>';
+      }
+
+      host.innerHTML =
+        '<article class="holiday-parchment station-panel">' +
+          '<div class="station-top">' +
+            '<h2 class="station-heading">' + esc(station.title) + '</h2>' +
+            '<span class="topic-pill">' + esc(station.grammarTopic) + '</span>' +
+          '</div>' +
+          '<div class="narrative-callout">' + esc(station.briefing) + '</div>' +
+          '<div class="tasks-stack">' + tasksMarkup + '</div>' +
+          '<div class="verify-strip">' +
+            '<div class="verify-msg">' + feedbackText + '</div>' +
+            cooldownMarkup +
+            (!cleared
+              ? '<button type="button" id="verify-station-btn" class="btn btn-pine" ' + (wait > 0 ? "disabled" : "") + ' onclick="verifyStationTasks(' + station.id + ')">' + (wait > 0 ? ("Cooldown (" + wait + "s)") : "Verify Terminal (4/4)") + '</button>'
+              : '') +
+          '</div>' +
+          lockMarkup +
+        '</article>';
+    }
+
+    function renderVaultView(host) {
+      const slots = ESCAPE_STATIONS.map(function (st) {
+        const open = appState.lockOpened[st.id];
+        return (
+          '<div class="key-card' + (open ? " open" : "") + '">' +
+            '<div style="font-size: 0.72rem; font-weight: 700;">Lock #' + st.id + '</div>' +
+            '<div class="key-symbol">' + (open ? st.keyChar : "?") + '</div>' +
+          '</div>'
+        );
+      }).join("");
+
+      const collected = Object.values(appState.lockOpened).filter(Boolean).length;
+
+      host.innerHTML =
+        '<section id="vault-panel" class="festive-brass-panel vault-panel">' +
+          '<span class="badge badge-berry">🎄 Final Override Console</span>' +
+          '<h2 class="font-serif" style="font-size: 1.78rem; color: var(--gold-bright); margin: 10px 0 8px;">Midnight Express Master Vault</h2>' +
+          '<p style="max-width: 600px; margin: 0 auto; color: #d8e6df; font-size: 0.94rem;">' +
+            'Unlock all six brass station locks to gather the six Master Key symbols, then enter the 6-character code below to launch the Christmas Express!' +
+          '</p>' +
+          '<div class="key-ring">' + slots + '</div>' +
+          '<div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 8px;">' +
+            '<input type="text" maxlength="6" class="vault-code-input" placeholder="______" ' +
+            'value="' + esc(appState.vaultCode) + '" ' +
+            'oninput="editVaultCode(this.value)" ' +
+            'onkeydown="if(event.key===\'Enter\') checkMasterVault()" />' +
+            '<button type="button" class="btn btn-gold" style="padding: 12px 24px; font-size: 0.98rem;" onclick="checkMasterVault()">' +
+              '🚂 Unlock Master Vault (' + collected + '/6 Keys)' +
+            '</button>' +
+            '<p id="vault-feedback" class="hidden" style="color: #fca5a5; font-weight: 700; font-size: 0.88rem; margin: 0;"></p>' +
+          '</div>' +
+        '</section>';
+    }
+
+    /* -----------------------------------------------------------------------
+       MODALS: GRAMMAR FIELD GUIDE & PRINT HANDOUT
+       ----------------------------------------------------------------------- */
+    function openFieldGuide() {
+      HolidayAudio.tap();
+      document.getElementById("field-guide-modal").classList.remove("hidden");
+    }
+
+    function closeFieldGuide() {
+      document.getElementById("field-guide-modal").classList.add("hidden");
+    }
+
+    function openPrintModal() {
+      HolidayAudio.tap();
+      const target = document.getElementById("print-content");
+      if (target) {
+        target.innerHTML =
+          '<div style="border-bottom: 2px solid #1e293b; padding-bottom: 10px; margin-bottom: 14px;">' +
+            '<h2 style="margin: 0; font-size: 1.24rem;">Operation: Midnight Express — Grade 10 Grammar Handout</h2>' +
+            '<p style="margin: 4px 0 0; font-size: 0.82rem; color: #475569;">Team: ___________________________ &nbsp;&nbsp;|&nbsp;&nbsp; Master Code: [ ___ ] [ ___ ] [ ___ ] [ ___ ] [ ___ ] [ ___ ]</p>' +
+          '</div>' +
+          ESCAPE_STATIONS.map(function (st) {
+            return (
+              '<div style="border: 1px solid #94a3b8; border-radius: 10px; padding: 12px; margin-bottom: 12px; break-inside: avoid;">' +
+                '<div style="display: flex; justify-content: space-between; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; margin-bottom: 8px;">' +
+                  '<strong>' + esc(st.title) + ' (' + esc(st.grammarTopic) + ')</strong>' +
+                  '<span class="font-mono" style="font-size: 0.8rem;">Lock #' + st.id + ': [ ___ ] &rarr; Key: [ ___ ]</span>' +
+                '</div>' +
+                '<ol style="margin: 0; padding-left: 18px; font-size: 0.84rem;">' +
+                  st.tasks.map(function (t) {
+                    const line = t.type === "mc"
+                      ? '<div style="color: #334155; margin-top: 2px;">' + t.options.map(function (o, i) { return '(' + String.fromCharCode(65 + i) + ') ' + esc(o); }).join(' &nbsp;|&nbsp; ') + '</div>'
+                      : '<div style="color: #334155; margin-top: 2px;">Answer: ________________________________________</div>';
+                    return '<li style="margin-bottom: 6px;"><strong>' + esc(t.prompt) + '</strong>' + line + '</li>';
+                  }).join("") +
+                '</ol>' +
+                '<div style="margin-top: 8px; padding-top: 6px; border-top: 1px dashed #cbd5e1; font-size: 0.82rem; font-weight: 700;">' +
+                  esc(st.riddle) +
+                '</div>' +
+              '</div>'
+            );
+          }).join("");
+      }
+      document.getElementById("print-modal").classList.remove("hidden");
+    }
+
+    function closePrintModal() {
+      document.getElementById("print-modal").classList.add("hidden");
+    }
+
+    /* Safe initialization on window load */
+    window.addEventListener("DOMContentLoaded", function () {
+      refreshClockText();
+    });
+  </script>
+</body>
+</html>
